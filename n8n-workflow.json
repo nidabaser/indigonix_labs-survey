@@ -1,0 +1,163 @@
+{
+  "name": "Indigonix Survey Intake",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "indigonix-survey-intake",
+        "responseMode": "lastNode",
+        "options": {}
+      },
+      "id": "webhook_node",
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [260, 300],
+      "webhookId": "replace-me"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            {
+              "value1": "={{$json[\"contact_opt_in\"]}}",
+              "value2": true
+            }
+          ]
+        }
+      },
+      "id": "if_opt_in",
+      "name": "Contact Opt-In?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [520, 300]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": "YOUR_GOOGLE_SHEET_ID",
+        "sheetName": "Responses",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "submitted_at": "={{$json[\"submitted_at\"]}}",
+            "rating": "={{$json[\"rating\"]}}",
+            "key_insight": "={{$json[\"key_insight\"]}}",
+            "ai_maturity": "={{$json[\"ai_maturity\"]}}",
+            "desired_use_case": "={{$json[\"desired_use_case\"]}}",
+            "biggest_challenge": "={{$json[\"biggest_challenge\"]}}",
+            "contact_opt_in": "={{$json[\"contact_opt_in\"]}}",
+            "name": "={{$json[\"name\"]}}",
+            "email": "={{$json[\"email\"]}}",
+            "phone": "={{$json[\"phone\"]}}",
+            "company": "={{$json[\"company\"]}}"
+          }
+        },
+        "options": {}
+      },
+      "id": "google_sheets_append",
+      "name": "Append to Google Sheets",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [780, 220],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "replace-with-your-credential-id",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "you@example.com",
+        "subject": "New Indigonix survey lead",
+        "emailType": "text",
+        "message": "={{`Yeni lead geldi:\n\nİsim: ${$json[\"name\"] || '-'}\nEmail: ${$json[\"email\"] || '-'}\nTelefon: ${$json[\"phone\"] || '-'}\nŞirket: ${$json[\"company\"] || '-'}\nUse case: ${$json[\"desired_use_case\"]}\nChallenge: ${$json[\"biggest_challenge\"]}`}}",
+        "options": {}
+      },
+      "id": "send_email",
+      "name": "Email Notification",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [780, 380],
+      "credentials": {
+        "smtp": {
+          "id": "replace-with-your-credential-id",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\"ok\": true}"
+      },
+      "id": "respond_ok",
+      "name": "Respond OK",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [1040, 300]
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Contact Opt-In?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Contact Opt-In?": {
+      "main": [
+        [
+          {
+            "node": "Append to Google Sheets",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Email Notification",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append to Google Sheets": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Email Notification": {
+      "main": [
+        [
+          {
+            "node": "Respond OK",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {},
+  "versionId": "1"
+}
