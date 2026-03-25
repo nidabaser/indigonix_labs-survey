@@ -3,6 +3,14 @@
 import { useMemo, useState } from 'react';
 import type { SurveyPayload } from '@/lib/types';
 
+const ratingLabels: Record<number, string> = {
+  1: 'En düşük',
+  2: 'Düşük',
+  3: 'Orta',
+  4: 'Yüksek',
+  5: 'En yüksek',
+};
+
 const maturityOptions = [
   { value: 'none', label: 'Hiç yok' },
   { value: 'pilot', label: 'Deneme / pilot aşamasında' },
@@ -18,13 +26,32 @@ const useCaseOptions = [
   { value: 'decision', label: 'Karar destek sistemleri' },
 ] as const;
 
+const keyInsightCategoryOptions = [
+  { value: 'orchestration', label: 'Ajan orkestrasyonu ve görev dağılımı' },
+  { value: 'memory', label: 'Uzun süreli bellek ve bağlam yönetimi' },
+  { value: 'tools', label: 'Araç entegrasyonu ve API kullanımı' },
+  { value: 'rag', label: 'Retrieval-Augmented Generation (RAG)' },
+  { value: 'workflow', label: 'Çok adımlı iş akışı tasarımı' },
+  { value: 'safety', label: 'Güvenlik ve insan denetimi (Human-in-the-loop)' },
+  { value: 'frameworks', label: 'Framework karşılaştırması (LangGraph, AutoGen, CrewAI...)' },
+] as const;
+
+const biggestChallengeOptions = [
+  { value: 'data', label: 'Veri' },
+  { value: 'security', label: 'Güvenlik' },
+  { value: 'roi', label: 'ROI' },
+  { value: 'infrastructure', label: 'Altyapı' },
+  { value: 'governance', label: 'Governance' },
+] as const;
+
 function makeEmptyPayload(): SurveyPayload {
   return {
     rating: 5,
     keyInsight: '',
+    keyInsightCategory: 'orchestration',
     aiMaturity: 'pilot',
     desiredUseCase: 'operations',
-    biggestChallenge: '',
+    biggestChallenge: 'data',
     contactOptIn: false,
     privacyAccepted: false,
     name: '',
@@ -32,7 +59,7 @@ function makeEmptyPayload(): SurveyPayload {
     phone: '',
     company: '',
     website: '',
-    startedAt: Date.now(), // bileşen her mount'ta taze timestamp alır
+    startedAt: Date.now(),
   };
 }
 
@@ -61,8 +88,8 @@ export function SurveyForm() {
     }
 
     if (currentStep === 2) {
-      if (!form.keyInsight.trim() || !form.biggestChallenge.trim()) {
-        setError('Lütfen açık uçlu iki soruyu da doldurun.');
+      if (!form.keyInsight.trim()) {
+        setError('Lütfen ikinci soruyu (en değerli öğreniminizi) doldurun.');
         return false;
       }
     }
@@ -179,6 +206,7 @@ export function SurveyForm() {
             <h2 className="mt-2 text-2xl font-semibold">Anket soruları</h2>
           </div>
 
+          {/* Soru 1 — Puanlama */}
           <div>
             <label className="mb-3 block text-sm font-medium">Bu sunumu ne kadar faydalı buldunuz?</label>
             <div className="grid grid-cols-5 gap-2">
@@ -187,22 +215,35 @@ export function SurveyForm() {
                   key={value}
                   type="button"
                   onClick={() => update('rating', value)}
-                  className={`rounded-2xl border px-4 py-3 text-sm font-medium transition ${
+                  className={`flex flex-col items-center gap-1 rounded-2xl border px-2 py-3 text-sm font-medium transition ${
                     form.rating === value
                       ? 'border-indigoAccent bg-indigoAccent/20 text-white'
                       : 'border-white/10 bg-white/5 text-slate-300 hover:border-indigoAccent/40'
                   }`}
                 >
-                  {value}
+                  <span className="text-base font-semibold">{value}</span>
+                  <span className="text-[10px] leading-tight text-slate-400">{ratingLabels[value]}</span>
                 </button>
               ))}
             </div>
           </div>
 
+          {/* Soru 2 — En değerli öğrenim (dropdown + textarea) */}
           <div>
             <label className="mb-3 block text-sm font-medium">Bugün öğrendiğiniz en değerli şey neydi?</label>
+            <select
+              value={form.keyInsightCategory}
+              onChange={(e) => update('keyInsightCategory', e.target.value as SurveyPayload['keyInsightCategory'])}
+              className="mb-3 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white"
+            >
+              {keyInsightCategoryOptions.map((option) => (
+                <option key={option.value} value={option.value} className="bg-slate-900">
+                  {option.label}
+                </option>
+              ))}
+            </select>
             <textarea
-              rows={4}
+              rows={3}
               value={form.keyInsight}
               onChange={(e) => update('keyInsight', e.target.value)}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
@@ -210,6 +251,7 @@ export function SurveyForm() {
             />
           </div>
 
+          {/* Soru 3 — AI Olgunluk */}
           <div>
             <label className="mb-3 block text-sm font-medium">Kurumunuzda AI kullanımı hangi seviyede?</label>
             <div className="grid gap-3">
@@ -227,8 +269,9 @@ export function SurveyForm() {
             </div>
           </div>
 
+          {/* Soru 4 — Kullanım alanı */}
           <div>
-            <label className="mb-3 block text-sm font-medium">Agentic AI’yi en çok hangi alanda kullanmak isterdiniz?</label>
+            <label className="mb-3 block text-sm font-medium">Agentic AI'yi en çok hangi alanda kullanmak isterdiniz?</label>
             <select
               value={form.desiredUseCase}
               onChange={(e) => update('desiredUseCase', e.target.value as SurveyPayload['desiredUseCase'])}
@@ -242,15 +285,20 @@ export function SurveyForm() {
             </select>
           </div>
 
+          {/* Soru 5 — En büyük engel (dropdown) */}
           <div>
             <label className="mb-3 block text-sm font-medium">Sizin için en büyük engel nedir?</label>
-            <textarea
-              rows={4}
+            <select
               value={form.biggestChallenge}
-              onChange={(e) => update('biggestChallenge', e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
-              placeholder="Veri, güvenlik, ROI, altyapı, governance..."
-            />
+              onChange={(e) => update('biggestChallenge', e.target.value as SurveyPayload['biggestChallenge'])}
+              className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white"
+            >
+              {biggestChallengeOptions.map((option) => (
+                <option key={option.value} value={option.value} className="bg-slate-900">
+                  {option.label}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
       )}

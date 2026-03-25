@@ -3,9 +3,18 @@ import { z } from 'zod';
 export const surveySchema = z.object({
   rating: z.coerce.number().int().min(1).max(5),
   keyInsight: z.string().trim().min(2).max(1000),
+  keyInsightCategory: z.enum([
+    'orchestration',
+    'memory',
+    'tools',
+    'rag',
+    'workflow',
+    'safety',
+    'frameworks',
+  ]),
   aiMaturity: z.enum(['none', 'pilot', 'team', 'enterprise']),
   desiredUseCase: z.enum(['operations', 'sales', 'sdlc', 'cx', 'decision']),
-  biggestChallenge: z.string().trim().min(2).max(1000),
+  biggestChallenge: z.enum(['data', 'security', 'roi', 'infrastructure', 'governance']),
   contactOptIn: z.boolean().default(false),
   privacyAccepted: z.boolean().refine((value) => value === true, {
     message: 'Aydınlatma metnini okuduğunuzu onaylamanız gerekir.',
