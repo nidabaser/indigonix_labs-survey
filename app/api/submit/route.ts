@@ -91,7 +91,7 @@ export async function POST(request: Request) {
 
     const webhookUrl = process.env.N8N_WEBHOOK_URL;
     if (webhookUrl) {
-      fetch(webhookUrl, {
+      await fetch(webhookUrl, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
