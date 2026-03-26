@@ -149,12 +149,6 @@ export function SurveyForm() {
           <p className="text-sm leading-6 text-slate-300">
             Yanıtınız başarıyla kaydedildi. Etkinlik içeriğini geliştirmek ve talep eden katılımcılarla iletişime geçmek için kullanılacaktır.
           </p>
-          <a
-            href="https://indigonix.ai"
-            className="inline-flex rounded-2xl border border-indigoAccent/40 px-5 py-3 text-sm font-medium text-white transition hover:bg-indigoAccent/10"
-          >
-            Indigonix ana siteye dön
-          </a>
         </div>
       </div>
     );
