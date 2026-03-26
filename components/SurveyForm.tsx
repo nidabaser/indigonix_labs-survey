@@ -91,13 +91,6 @@ export function SurveyForm() {
       }
     }
 
-    if (currentStep === 2) {
-      if (!form.keyInsight.trim()) {
-        setError('Lütfen ikinci soruyu (en değerli öğreniminizi) doldurun.');
-        return false;
-      }
-    }
-
     if (currentStep === 3) {
       if (form.contactOptIn) {
         const hasContact = !!(form.name?.trim() || form.email?.trim() || form.phone?.trim());
