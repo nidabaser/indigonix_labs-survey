@@ -49,7 +49,7 @@ export default function KvkkPage() {
           <section>
             <h2 className="text-lg font-medium text-white">Önemli not</h2>
             <p>
-              Bu metin hukuki danışmanlık yerine geçmez. Canlı kullanıma almadan önce şirketinize uygun nihai metni bir hukuk uzmanıyla gözden geçirmeniz gerekir.
+              INDIGONIX LABS © 2026
             </p>
           </section>
         </div>
