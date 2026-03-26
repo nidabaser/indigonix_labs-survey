@@ -59,6 +59,10 @@ function makeEmptyPayload(): SurveyPayload {
     phone: '',
     company: '',
     website: '',
+    ratingNote: '',
+    aiMaturityNote: '',
+    desiredUseCaseNote: '',
+    biggestChallengeNote: '',
     startedAt: Date.now(),
   };
 }
@@ -160,7 +164,7 @@ export function SurveyForm() {
     <div className="rounded-3xl border border-indigoLine bg-indigoCard/90 p-6 shadow-glow sm:p-8">
       <div className="mb-8">
         <div className="mb-3 flex items-center justify-between text-xs uppercase tracking-[0.22em] text-slate-400">
-          <span>Indigonix Labs Survey</span>
+          <span>INDIGONIX LABS SURVEY</span>
           <span>%{progress}</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
@@ -226,6 +230,13 @@ export function SurveyForm() {
                 </button>
               ))}
             </div>
+            <textarea
+            rows={2}
+            value={form.ratingNote ?? ''}
+            onChange={(e) => update('ratingNote', e.target.value)}
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
+            placeholder="Kısa bir not bırakabilirsiniz (Opsiyonel)"
+          />
           </div>
 
           {/* Soru 2 — En değerli öğrenim (dropdown + textarea) */}
@@ -247,7 +258,7 @@ export function SurveyForm() {
               value={form.keyInsight}
               onChange={(e) => update('keyInsight', e.target.value)}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
-              placeholder="Kısa bir not bırakabilirsiniz"
+              placeholder="Kısa bir not bırakabilirsiniz (Opsiyonel)"
             />
           </div>
 
@@ -267,6 +278,13 @@ export function SurveyForm() {
                 </label>
               ))}
             </div>
+            <textarea
+            rows={2}
+            value={form.aiMaturityNote ?? ''}
+            onChange={(e) => update('aiMaturityNote', e.target.value)}
+            className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
+            placeholder="Kısa bir not bırakabilirsiniz (Opsiyonel)"
+          />
           </div>
 
           {/* Soru 4 — Kullanım alanı */}
@@ -283,6 +301,13 @@ export function SurveyForm() {
                 </option>
               ))}
             </select>
+            <textarea
+            rows={2}
+            value={form.desiredUseCaseNote ?? ''}
+            onChange={(e) => update('desiredUseCaseNote', e.target.value)}
+            className="mt-3 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
+            placeholder="Kısa bir not bırakabilirsiniz (Opsiyonel)"
+          />
           </div>
 
           {/* Soru 5 — En büyük engel (dropdown) */}
@@ -299,6 +324,13 @@ export function SurveyForm() {
                 </option>
               ))}
             </select>
+            <textarea
+            rows={2}
+            value={form.biggestChallengeNote ?? ''}
+            onChange={(e) => update('biggestChallengeNote', e.target.value)}
+            className="mt-3 w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
+            placeholder="Kısa bir not bırakabilirsiniz (Opsiyonel)"
+          />
           </div>
         </div>
       )}
@@ -343,7 +375,7 @@ export function SurveyForm() {
               value={form.phone}
               onChange={(e) => update('phone', e.target.value)}
               className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-slate-500"
-              placeholder="Telefon"
+              placeholder="0(5xx)xxxx"
             />
             <input
               type="text"
