@@ -6,7 +6,7 @@ export const surveySchema = z.object({
   aiMaturityNote: z.string().trim().max(1000).optional().or(z.literal('')),
   desiredUseCaseNote: z.string().trim().max(1000).optional().or(z.literal('')),
   biggestChallengeNote: z.string().trim().max(1000).optional().or(z.literal('')),
-  keyInsight: z.string().trim().min(2).max(1000).optional().or(z.literal('')),
+  keyInsight: z.string().trim().max(1000).optional().or(z.literal('')),
   keyInsightCategory: z.enum([
     'orchestration',
     'memory',
