@@ -47,10 +47,7 @@ export default function KvkkPage() {
           </section>
 
           <section>
-            <h2 className="text-lg font-medium text-white">Önemli not</h2>
-            <p>
-              INDIGONIX LABS © 2026
-            </p>
+            <h2 className="text-lg font-medium text-white">INDIGONIX LABS © 2026</h2>
           </section>
         </div>
       </div>
