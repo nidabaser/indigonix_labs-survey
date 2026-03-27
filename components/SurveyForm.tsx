@@ -27,13 +27,13 @@ const useCaseOptions = [
 ] as const;
 
 const keyInsightCategoryOptions = [
-  { value: 'orchestration', label: 'Ajan orkestrasyonu ve görev dağılımı' },
-  { value: 'memory', label: 'Uzun süreli bellek ve bağlam yönetimi' },
-  { value: 'tools', label: 'Araç entegrasyonu ve API kullanımı' },
-  { value: 'rag', label: 'Retrieval-Augmented Generation (RAG)' },
-  { value: 'workflow', label: 'Çok adımlı iş akışı tasarımı' },
-  { value: 'safety', label: 'Güvenlik ve insan denetimi (Human-in-the-loop)' },
-  { value: 'frameworks', label: 'Framework karşılaştırması (LangGraph, AutoGen, CrewAI...)' },
+  { value: 'orchestration', label: 'Agentic sistemlerin neden PoC den üretime geçtiği' },
+  { value: 'memory', label: 'YZ kullananla YZ ile sistem kuranın farkı' },
+  { value: 'tools', label: 'RPA → AI → Agentic dönüşüm evrimi' },
+  { value: 'rag', label: 'Kurumsal mimarilerin (TOGAF/SAFe) yaşayan sisteme dönüşümü' },
+  { value: 'workflow', label: 'İnsan denetimi ile güvenli sistem tasarımı' },
+  { value: 'safety', label: 'Sistemlerin otonom aksiyon alma mantığı' },
+  { value: 'frameworks', label: 'Agentic sistemin yeni bir işletim modeli olduğu' },
 ] as const;
 
 const biggestChallengeOptions = [
