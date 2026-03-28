@@ -65,10 +65,15 @@ export async function POST(request: Request) {
 
     const insertPayload = {
       rating: data.rating,
+      rating_note: data.ratingNote || null,
       key_insight: data.keyInsight,
+      key_insight_category: data.keyInsightCategory, 
       ai_maturity: mapMaturity(data.aiMaturity),
+      ai_maturity_note: data.aiMaturityNote || null, 
       desired_use_case: mapUseCase(data.desiredUseCase),
+      desired_use_case_note: data.desiredUseCaseNote || null,
       biggest_challenge: data.biggestChallenge,
+      biggest_challenge_note: data.biggestChallengeNote || null,
       contact_opt_in: data.contactOptIn,
       privacy_accepted: data.privacyAccepted,
       name: data.name || null,
